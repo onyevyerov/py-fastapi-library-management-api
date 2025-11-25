@@ -13,7 +13,7 @@ class Author(Base):
         index=True,
         autoincrement=True
     )
-    name = Column(String(55), nullable=False)
+    name = Column(String(55), nullable=False, unique=True)
     bio = Column(String(610), nullable=True)
     books = relationship("Book", backref="author")
 

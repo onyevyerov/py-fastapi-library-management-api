@@ -13,15 +13,16 @@ def get_all_books(
         limit: int = 10,
         author_id: int = None
 ) -> List[models.Book]:
-    db_books =  db.query(models.Book).offset(skip).limit(limit).all()
+    query = db.query(models.Book)
+
+    if author_id is not None:
+        query = query.filter(models.Book.author_id == author_id)
+
+    db_books = query.offset(skip).limit(limit).all()
+
     if not db_books:
         raise HTTPException(status_code=404, detail="Books not found")
-    if author_id:
-        db_books = (
-            db.query(models.Book).
-            filter(models.Book.author_id == author_id).
-            offset(skip).limit(limit).all()
-        )
+
     return db_books
 
 def create_book(db: Session, book: BookCreate):
@@ -60,7 +61,7 @@ def delete_book(db: Session, id:int):
 def get_all_authors(db: Session, skip: int = 0, limit: int = 10):
     db_author = db.query(models.Author).offset(skip).limit(limit).all()
     if not db_author:
-        raise HTTPException(status_code=404, detail="Authors not found")
+        return []
     return db_author
 
 def get_author(db: Session, id: int):

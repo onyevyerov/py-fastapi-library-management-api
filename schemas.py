@@ -32,13 +32,12 @@ class Author(AuthorBase):
 class BookBase(BaseModel):
     title: str
     summary: str | None = None
+    publication_date: date
     author_id: int
 
     model_config = {
         "from_attributes": True
     }
-    publication_date: date
-    author_id: int
 
 
 class Book(BookBase):

@@ -21,7 +21,7 @@ def get_all_books(
     db_books = query.offset(skip).limit(limit).all()
 
     if not db_books:
-        raise HTTPException(status_code=404, detail="Books not found")
+        return []
 
     return db_books
 

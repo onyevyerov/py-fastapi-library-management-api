@@ -3,11 +3,14 @@ from typing import List
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 
+import models
 import crud
 import schemas
-from database import SessionLocal
+from database import SessionLocal, engine
 
 app = FastAPI()
+
+models.Base.metadata.create_all(bind=engine)
 
 def get_db() -> Session:
     db = SessionLocal()
